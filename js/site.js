@@ -3,13 +3,13 @@ var displayHelper = {};
 /**
  * purpose: initialize the poll
  */
-displayHelper.initializePoll = function(){
-	
+displayHelper.initializePoll = function(poll_data){
+
 	// bind events
 	$('#addOption').click(function(){
 		displayHelper.addOptionToList();
 	});
-	
+
 	$('#addMultiOptions').click(function(){
 		displayHelper.addMultiOptionsToList();
 	});
@@ -17,35 +17,52 @@ displayHelper.initializePoll = function(){
 	$('.startPoll').click(function(){
 		displayHelper.startPoll();
 	});
-	
+
 	$('.stopPoll').click(function(){
 		displayHelper.stopPoll();
 	});
-	
+
 	$('.changePoll').click(function(){
 		displayHelper.stopPoll();
 	});
-	
+
 	// add an option to the list when the user selects the enter key
-	$("#optionText").keypress(function (e) {  
-         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {  
+	$("#optionText").keypress(function (e) {
+         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
          	// take an action
 			displayHelper.addOptionToList();
-         }  
+         }
      });
-     
+
      // hide the poll results container because there are not any results yet
      $('#pollResults').hide();
+
+
+		 //if poll_data i present, start the poll_data
+		 console.log("checking poll data")
+		 console.log(poll_data)
+		 if (poll_data!==null) {
+
+			 $('.questionTextInput').val(poll_data.question);
+
+			 for(var op in poll_data.options) {
+				 displayHelper._addOption(poll_data.options[op]);
+			 }
+
+			  console.log(" ... is present")
+			  $('.startPoll').click();
+		 }
+
 };
 
 
 /**
- * purpose: add an option to the option list using the string in 
+ * purpose: add an option to the option list using the string in
  * the input field: #optionText
  */
 displayHelper.addOptionToList = function(){
 	var option = $('#optionText').val();
-	displayHelper._addOption(option);	
+	displayHelper._addOption(option);
 };
 
 /**
@@ -69,7 +86,7 @@ displayHelper.addMultiOptionsToList = function(){
 
 /**
  * purpose: add an option to the option list
- * 
+ *
  * @param String option the option text
  */
 displayHelper._addOption = function(option){
@@ -78,14 +95,14 @@ displayHelper._addOption = function(option){
 
 	if(option.length > 0){
 		$('<tr class="new"><td class="index"></td><td class="option">' + option + '</td><td><a href="#" class="removeParent">[x]</a></td></tr>')
-		.appendTo('#optionsList').hide().fadeIn('slow');	
-		
+		.appendTo('#optionsList').hide().fadeIn('slow');
+
 		// clear the option text
-		displayHelper._resetOptionInputText();		
-		
+		displayHelper._resetOptionInputText();
+
 		// bind the remove event to the delete button
 		displayHelper._bindRemoveEvents();
-		
+
 		// update the table index. This will renumber the table rows.
 		displayHelper._updateTableIndex();
 	}
@@ -96,12 +113,12 @@ displayHelper._addOption = function(option){
  */
 displayHelper._resetOptionInputText = function(){
 	$('#optionText').val('');
-	
+
 };
 
 /**
  * purpose: reset the poll using the values in the Object poll as the new poll values
- * 
+ *
  * @param Object poll an object with the question and options for the poll
  */
 displayHelper._resetPoll = function(poll){
@@ -116,7 +133,7 @@ displayHelper._resetPoll = function(poll){
 		console.log($(this));
 		displayHelper._addOption(n);
 	});
-	
+
 	// stop the poll
 	displayHelper.stopPoll();
 };
@@ -129,23 +146,23 @@ displayHelper._bindRemoveEvents = function(){
 		$(this).parent().parent().remove();
 		displayHelper._updateTableIndex();
 	});
-	
+
 	$('#optionsList tr.new').removeClass('new');
 };
-		
+
 /**
  * purpose: function to stop a poll. This function is bound to a button.
  */
 displayHelper.stopPoll = function(){
 	// hide the stop poll button container
 	$('.stopPoll').hide();
-	
+
 	// hide the poll questions container
 	$('.changePoll, #pollQuestions').hide();
-	
+
 	// show hidden containers for setup
 	$('.newOption, .removeParent, .startPoll, .setup').show('slow');
-	
+
 	// show the existing poll results
 	$('#pollResults').show();
 };
@@ -157,10 +174,10 @@ displayHelper.stopPoll = function(){
 displayHelper.changePoll = function(){
 	// hide the stop poll button container
 	$('.stopPoll').hide();
-	
+
 	//show the change poll container
 	$('.changePoll').show();
-	
+
 	// show the existing poll results
 	$('#pollResults').show();
 };
@@ -172,16 +189,16 @@ displayHelper.startPoll = function(){
 	if($('#optionsList .option').size() > 1){
 		// hide the setup container
 		$('.setup').hide();
-		
+
 		// display the stop poll button
 		$('.stopPoll').show();
-		
+
 		// hide the existing poll results
 		$('#pollResults').hide();
 
 		// hide set up containers
 		$('.newOption, .removeParent, .startPoll').hide();
-		
+
 		var pollSettings = {};
 		pollSettings.optionArray = [];
 
@@ -192,13 +209,16 @@ displayHelper.startPoll = function(){
 		$('#optionsList .option').each(function(i, n){
 			pollSettings.optionArray[pollSettings.optionArray.length] = $(this).text();
 		});
-		
+
+
+
+
 		//pollSettings.voteType = $("input[name='votingType']:checked").val();
         pollSettings.voteType = "simpleVoting";
 
 		// start the poll
 		ahp.startPoll(pollSettings);
-		
+
 	}
 };
 
@@ -215,7 +235,7 @@ var ahp = {};
 
 /**
  * the question text
- */ 
+ */
 ahp.question = '';
 
 /**
@@ -249,7 +269,7 @@ ahp.resultCount = 1;
 
 /**
  * purpose: start the poll
- * 
+ *
  * @param Array optionArray the options to be presented as pairs for voting
  * @param String questionText the question
  */
@@ -257,15 +277,15 @@ ahp.startPoll = function(pollSettings){
 	// setup the questions and options
 	ahp.question = pollSettings.questionText;
 	ahp.optionArray = pollSettings.optionArray;
-	
+
 	ahp._setVotingType(pollSettings);
 
 	// setup the result array
 	ahp._setUpResultArray();
-	
+
 	// determine the total number of questions
 	ahp._initializeQuestionCount();
-	
+
 	// display the first pair
 	ahp._displayNextQuestion();
 	$('#pollQuestions').show('slow');
@@ -276,13 +296,13 @@ ahp.startPoll = function(pollSettings){
  */
 ahp._initializeQuestionCount = function(){
 	ahp.questionIndex = 1;
-	ahp.questionTotal = ((ahp.optionArray.length * ahp.optionArray.length) - ahp.optionArray.length) / 2;	
+	ahp.questionTotal = ((ahp.optionArray.length * ahp.optionArray.length) - ahp.optionArray.length) / 2;
 };
 
 /**
  * purpose: hide/show vote buttons based on voteType
- * 
- * @param Object pollSettings 
+ *
+ * @param Object pollSettings
  */
 ahp._setVotingType = function(pollSettings){
 	if(pollSettings.voteType){
@@ -291,12 +311,12 @@ ahp._setVotingType = function(pollSettings){
 		 		$('.detailedPollButtons').hide();
 		 		$('.simplePollButtons').show();
 		 		break;
-		 		
+
 		 	case 'detailedVoting':
 		 		$('.simplePollButtons').hide();
 		 		$('.detailedPollButtons').show();
 		 		break;
-		 		
+
 		 	default:
 		 		break;
 		 }
@@ -309,11 +329,11 @@ ahp._setVotingType = function(pollSettings){
 ahp._displayNextQuestion = function(){
 	// get the next pair
 	var nextQuestion = ahp._getNextQuestion(this.optionArray, this.resultArray);
-	
+
 	if(nextQuestion !== false){
 		// display the pair
 		$('.questionTextDisplay').text(ahp.question);
-		$('.questionIndex').text('comparison '+ ahp.questionIndex +' of ' + ahp.questionTotal);
+		$('.questionIndex').text('Σύγκριση ' + ahp.questionIndex +' από ' + ahp.questionTotal);
 		$('#pollQuestion1').text(ahp.optionArray[nextQuestion[0]]);
 		$('#pollQuestion2').text(ahp.optionArray[nextQuestion[1]]);
 		ahp._bindVoteEvents(nextQuestion);
@@ -322,7 +342,7 @@ ahp._displayNextQuestion = function(){
 		ahp._unbindVoteEvents();
 		ahp._calculateResult();
 	}
-	
+
 };
 
 /**
@@ -336,17 +356,17 @@ ahp._unbindVoteEvents = function(){
 	$('.detailedPollButtons input[type="button"]').each(function(){
 		$(this).unbind('click');
 	});
-}; 
+};
 
 /**
  * purpose: bind the events to the voting buttons
  */
 ahp._bindVoteEvents = function(nextQuestionArr){
 	ahp._unbindVoteEvents();
-		
+
 	var leftpair = nextQuestionArr;
 	var rightpair = [nextQuestionArr[1], nextQuestionArr[0] ];
-	
+
 	ahp._bindSimpleVoteEvents(leftpair, rightpair);
 	ahp._bindDetailedVoteEvents(leftpair, rightpair);
 };
@@ -362,15 +382,15 @@ ahp._bindSimpleVoteEvents = function(leftpair, rightpair){
 	$('.simplePollButtons #L_SlightlyMore').click(function(){
 		ahp.recordVote(leftpair, ahp.scores.low);
 	});
-	
+
 	$('.simplePollButtons #L_R_Same').click(function(){
 		ahp.recordVote(leftpair, ahp.scores.eq);
 	});
-	
+
 	$('.simplePollButtons #R_SlightlyMore').click(function(){
 		ahp.recordVote(rightpair, ahp.scores.low);
 	});
-	
+
 	$('#R_MuchMore').click(function(){
 		ahp.recordVote(rightpair, ahp.scores.high);
 	});
@@ -385,13 +405,13 @@ ahp._bindDetailedVoteEvents = function(leftpair, rightpair){
 			ahp.recordVote(leftpair, parseInt($(this).val(), 10));
 		});
 	});
-	
+
 	$('.detailedPollButtons input[type="button"].rightMore').each(function(){
 		$(this).click(function(){
 			ahp.recordVote(rightpair, parseInt($(this).val(), 10));
 		});
 	});
-	
+
 	$('.detailedPollButtons input[type="button"].same').click(function(){
 		ahp.recordVote(leftpair, 1);
 	});
@@ -400,7 +420,7 @@ ahp._bindDetailedVoteEvents = function(leftpair, rightpair){
 
 /**
  * purpose: record a vote
- * 
+ *
  * @param Array pair the index of the questions in optionArray
  * @param Integer score the value of the vote
  */
@@ -410,10 +430,10 @@ ahp.recordVote = function (pair, score){
 	// record the scores
 	ahp.resultArray[pair[0]][pair[1]] = score;
 	ahp.resultArray[pair[1]][pair[0]] = 1/score;
-	
+
 	// increment the question index
 	ahp.questionIndex ++;
-	
+
 	// display the next pair
 	ahp._displayNextQuestion();
 };
@@ -423,16 +443,16 @@ ahp.recordVote = function (pair, score){
  */
 ahp._calculateResult = function(){
 	console.log('calculating results ...');
-	
-	// hide questions 
+
+	// hide questions
 	$('#pollQuestions').hide('slow');
 
 	// calc results
 	var calcResults = ahpCalc.calculateResults(this.resultArray);
-	
+
 	// display the results
 	ahp._displayResults(calcResults);
-	
+
 	displayHelper.changePoll();
 };
 
@@ -442,45 +462,45 @@ ahp._calculateResult = function(){
 ahp._displayResults = function(calcResults){
 	var html = '';
 	var resultId = 'result_set_' +	ahp.resultCount;
-	
+
 	// remove the current class from existing result tables
 	$('table.current').removeClass('current');
-	
-	
+
+
 	html += '<table class="current pollResultTable">';
-	
+
 	// the question text
-	html +=	'<tr>' + 
+	html +=	'<tr>' +
 			'<td colspan="4" class="titleRow">Result Set #' +
 			ahp.resultCount +
 			': ' +
 			'<span class="resultSetQuestionText">' +
 			ahp.question +
-			' </span>' + 
+			' </span>' +
 			'</td></tr>';
-			
+
 	html += '<tr class="result_set resultColumnTitle">' +
 			'<td>Option</td>'	+
 			'<td>Result</td>'	+
-			'<td>Scaled <br /> Result</td>' +	
+			'<td>Scaled <br /> Result</td>' +
 			'<td>&nbsp</td>'+
-			'</tr>';	
-			
-	// the option text and result values	
+			'</tr>';
+
+	// the option text and result values
 	for(var i = 0; i < ahp.optionArray.length; i++){
 
 		var resultText = this._convertRealToRoundedPercent(calcResults.resultColumn[i]);
-	
+
 		html += '<tr class="result_set" >' +
-				'<td>' + 
+				'<td>' +
 				// option title
 				'<span class="resultSetOptionText">' + ahp.optionArray[i] + '</span>' +
 				'</td>' +
 				'<td>' +
-				'<span class="result">' + resultText + '</span>' + 
+				'<span class="result">' + resultText + '</span>' +
 				'</td>' +
 				'<td>' +
-				'<span style="text-align: right;" class="scaledResult">' + resultText + '</span>' + 
+				'<span style="text-align: right;" class="scaledResult">' + resultText + '</span>' +
 				'</td>' +
 				'<td>' +
 				// bar
@@ -495,7 +515,7 @@ ahp._displayResults = function(calcResults){
 			'<input size="4" style="text-align: right;" class="resultScaleFactor" value="1"/>' +
 			'<button style="text-align: right;" class="scaleResults-new">Scale</button>' +
 			'</td></tr>';
-	
+
 	// the consistancy calculation
 	var consistencyRatioClass = '';
 	if(calcResults.consistencyRatio < 0.11 ){
@@ -509,9 +529,9 @@ ahp._displayResults = function(calcResults){
 			'<td colspan="4" class = "' +
 			 consistencyRatioClass +
 			'">Consistency Ratio: ' +
-			 this._convertRealToRoundedPercent(calcResults.consistencyRatio, 2) + 
+			 this._convertRealToRoundedPercent(calcResults.consistencyRatio, 2) +
 			'</td></tr>';
-	
+
 	// the action buttons
 	html +=	'<tr class="' + resultId +'" >' +
 			'<td colspan="3">' +
@@ -519,13 +539,13 @@ ahp._displayResults = function(calcResults){
 			'<input type="button" class="togglePollResults" value="Hide/Show" /></td></tr>';
 
 	html += '</table>';
-	
+
 	// display the table
 	$(html).insertAfter('#pollResults h3').hide().fadeIn('slow');
-	
+
 	// increment the result table count
 	ahp.resultCount ++;
-	
+
 	// bind events to the buttons in the new table
 	ahp._addRetryEvents(resultId);
 	ahp._addResultToggleEvents(resultId);
@@ -536,53 +556,53 @@ ahp._displayResults = function(calcResults){
  * purpose: round a real number
  */
 ahp._convertRealToRoundedPercent = function(num, digits){
-	var e = (digits) ? digits : 4; 
+	var e = (digits) ? digits : 4;
 	var f1 = Math.pow(10, e);
-	
+
 	// rounding will be done by adding half the last digit to last-digit + 1
 	// f2 determines the position of last-digit + 1 and r is half the last digit
 	var f2 = Math.pow(10, e+1);
 	var r = 5 / f2;
-	
+
 	// calc rounded result
 	var resultValue = ((((num + r ) * f1) + '').split('.', 1)/f1).toFixed(4);
-	
+
 	// convert to string
 	resultValue = resultValue + '';
-	
+
 	return resultValue;
 };
 
 ahp._addScaleResultsEvents = function(){
-	
+
 	$('.scaleResults-new').click(function(){
 		var scaleFactor = $(this).parent().find('.resultScaleFactor').get(0);
 		scaleFactor = $(scaleFactor).val();
-		
+
 		$(this).parent().parent().parent().find('.result').each(function(){
 			var curentVal = $(this).text();
 			var scaledResult= $(this).parent().parent().find('.scaledResult').get(0);
 			$(scaledResult).text(ahp._convertRealToRoundedPercent(curentVal * scaleFactor));
-		});	
-		
+		});
+
 	});
-	
+
 	// bind the enter key events
 	var input = $('.scaleResults-new').parent().find('.resultScaleFactor').get(0);
-	$(input).keypress(function (e) {  
-         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {  
+	$(input).keypress(function (e) {
+         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
 			var scaleFactor = $(this).val();
-			
+
 			$(this).parent().parent().parent().find('.result').each(function(){
 				var curentVal = $(this).text();
 				var scaledResult= $(this).parent().parent().find('.scaledResult').get(0);
 				$(scaledResult).text(ahp._convertRealToRoundedPercent(curentVal * scaleFactor));
-			});	
- 
-         }  
-     }); 
+			});
 
-	$('.scaleResults-new').removeClass();	
+         }
+     });
+
+	$('.scaleResults-new').removeClass();
 };
 
 
@@ -590,11 +610,11 @@ ahp._addScaleResultsEvents = function(){
  * purpose: bind the retry event to the retry button in the result table
  */
 ahp._addRetryEvents = function(resultId){
-	
+
 	// bind the button click event to the retry function
 	$('.'+ resultId + ' input.retryPoll').click(function(){
 		ahp._retryPoll(resultId);
-	});	
+	});
 };
 
 /**
@@ -602,11 +622,11 @@ ahp._addRetryEvents = function(resultId){
  * This function is bound to a button in the result table.
  */
 ahp._addResultToggleEvents = function(resultId){
-	
+
 	// toggle the rows
 	$('.'+ resultId + ' input.togglePollResults').click(function(){
 		$(this).parent().parent().parent().find('.result_set').toggle();
-	});	
+	});
 };
 
 /**
@@ -619,12 +639,12 @@ ahp._retryPoll = function(resultId){
 
 	// get the poll question text from the result table
 	poll.question = $('.' + resultId).parent().find('.resultSetQuestionText').text();
-	
+
 	// get the poll options from the result table
 	$('.' + resultId).parent().find('.resultSetOptionText').each(function(i){
 		poll.options[i] = $(this).text();
 	});
-	
+
 	// reset the poll using the result question and options
 	displayHelper._resetPoll(poll);
 };
@@ -637,8 +657,8 @@ ahp._setUpResultArray = function(){
 };
 
 /**
- * purpose: find the next pair to display. 
- * 
+ * purpose: find the next pair to display.
+ *
  * @param Array optionArray an array of poll options
  * @return Array the row and column of the next unanswered question pair
  * @return Boolean returns false if there are no more pairs
@@ -661,7 +681,21 @@ ahp._getNextQuestion = function(optionArray, resultArray){
  * purpose: execute functions on document load
  */
 $(document).ready(function(){
+	var poll_data = {
+		"question": "Ποιός στόχος είναι ποιο σημαντικός για εσάς;",
+		"options": [
+			"Στήριξη γεωργικού εισοδήματος",
+			"Στροφή προς την αγορά/ ενίσχυση της ανταγωνιστικότητας",
+			"Υποστήριξη συνεταιρισμών/ομάδων παραγωγών",
+			"Εξοικονόμηση ενέργειας/εναλλακτικές πηγές ενέργειας",
+			"Προστασία των φυσικών πόρων (έδαφος, νερό) ",
+			"Διατήρηση της άγριας ζωής και του τοπίου",
+			"Ενίσχυση νέων γεωργών και νεοεισερχόμενων στη γεωργία ",
+			"Θέσεις εργασίας στην ύπαιθρο",
+			"Ασφάλεια και υγιεινή τροφίμων / Καλή μεταχείριση των ζώων"
+		]
+	}
 	// intialize the poll
-	displayHelper.initializePoll();
-	
+	displayHelper.initializePoll(poll_data);
+
 });
