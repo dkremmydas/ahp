@@ -30,6 +30,9 @@ td.pollQuestion {
 	text-align: center;
 	padding-top: .5em;
 	padding-bottom: .5em;
+	margin-top: 2em;
+	margin-bottom: 2em;
+	font-size: 1.4em;
 }
 
 #pollResults td.titleRow{
@@ -84,9 +87,9 @@ h3 {
 	color: white;
 	padding: .3em;
 	text-align: left;
-}	
+}
 
-lable {	
+lable {
 	display: block;
 }
 
@@ -101,7 +104,7 @@ lable {
 
 .pollQuestionTitle {
 	text-align: center;
-	padding: .5em;
+	padding: 2em;
 }
 
 #pollQuestions {
@@ -116,10 +119,17 @@ lable {
 }
 
 .simplePollButtons input{
-	margin-left: .5em;
-	margin-right: .5em;
-	padding-left: .5em;
-	padding-right: .5em;
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+tr.simplePollButtons td {
+	padding-top: 2em;
 }
 
 fieldset {
@@ -135,7 +145,7 @@ legend {
 }
 
 #optionsList {
-	margin-bottom: 1em;	
+	margin-bottom: 1em;
 }
 
 .detailedPollButtons input{
@@ -144,13 +154,13 @@ legend {
 }
 
 .votingOptions li{
-	margin-left: -3em;	
+	margin-left: -3em;
 }
 
 .votingOptions li{
 	list-style: none;
 	margin-bottom: 1em;
-	
+
 }
 
 fieldset img {

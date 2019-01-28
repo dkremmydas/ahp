@@ -1,18 +1,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>AHP</title>
-	
+
 	<link rel="stylesheet" type="text/css" href="css/styles.css" />
-	
+
 	<script type="text/javascript" src="js/jquery-1.2.6.js"></script>
 	<script type="text/javascript" src="js/ahpCalc.obj.js"></script>
 	<script type="text/javascript" src="js/site.js"></script>
 </head>
 <body>
 	<div class="container">
-	
+
 		<!-- poll setup-->
 		<div class="setup">
 			<h3>Set Up the Poll</h3>
@@ -22,7 +22,7 @@
                 <label>The question should support a pairwise comparison. For example: Which feature is more important?</label>
 				<input class="questionTextInput" style="width: 40em;"/>
 			</fieldset>
-	
+
 			<!-- option list -->
 			<fieldset>
 				<legend>Options</legend>
@@ -41,21 +41,21 @@
 					<input type="button" id="addMultiOptions" value="Add +" />
 				</div>
 			</fieldset>
-			
+
 		</div>
-		
+
 		<!-- start,stop, retry buttons -->
 		<div class="">
 			<input type="button" class="startPoll" value="Start" />
 			<input type="button" class="stopPoll" style="display:none;" value="Stop" />
 			<input type="button" class="changePoll" style="display:none;" value="Retry with New Options" />
 		</div>
-		
+
 		<!-- poll questions -->
 		<div id="pollQuestions" class="" style="display:none;">
 			<!-- displlay poll pair -->
 			<h3>Poll Question</h3>
-			
+
 			<table>
 				<tr>
 					<td class="pollQuestionTitle" colspan="3"><span class="questionTextDisplay">Question</span></td>
@@ -65,22 +65,22 @@
 					<td />
 					<td class="pollQuestion" id="pollQuestion2">&nbsp;</td>
 				</tr>
-				
+
 				<!-- Simple voting buttons -->
 				<tr class="simplePollButtons">
 					<td>
-						<input type="button" id="L_MuchMore" value="&lt;&lt;&nbsp;Much More" />
-						<input type="button" id="L_SlightlyMore" value="&lt;&nbsp;Slightly More" />
+						<input type="button" id="L_MuchMore" value="&lt;&lt;&nbsp;Πολύ περισσότερο" />
+						<input type="button" id="L_SlightlyMore" value="&lt;&nbsp;Λίγο περισσότερο" />
 					</td>
 					<td>
-						<input type="button" class="pollVoteLink" id="L_R_Same" value="Same" />
+						<input type="button" class="pollVoteLink" id="L_R_Same" value="Το Ίδιο" />
 					</td>
 					<td>
-						<input type="button" id="R_SlightlyMore" value="Slightly More&nbsp;&gt;" />
-						<input type="button" id="R_MuchMore" value="Much More&nbsp;&gt;&gt;" />
+						<input type="button" id="R_SlightlyMore" value="Λίγο περισσότερο&nbsp;&gt;" />
+						<input type="button" id="R_MuchMore" value="Πολύ περισσότερο&nbsp;&gt;&gt;" />
 					</td>
 				</tr>
-				
+
 				<!-- Detailed voting buttons -->
 				<tr class="detailedPollButtons">
 					<td>
@@ -112,7 +112,7 @@
 			</table>
 			<span class="questionIndex">0</span>
 		</div>
-		
+
 		<!-- results -->
 		<div id="pollResults">
 			<h3>Poll Results</h3>
