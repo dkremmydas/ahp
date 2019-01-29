@@ -167,3 +167,8 @@ fieldset img {
 	margin-left: 7em;
 	margin-top: .3em;
 }
+
+table.final_table {
+	margin: 2em;
+	border: 1px solid silver;
+}

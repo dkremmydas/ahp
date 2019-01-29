@@ -39,8 +39,6 @@ displayHelper.initializePoll = function(poll_data) {
 
 
   //if poll_data i present, start the poll_data
-  console.log("checking poll data")
-  console.log(poll_data)
   if (poll_data !== null) {
 
     $('.questionTextInput').val(poll_data.question);
@@ -49,7 +47,6 @@ displayHelper.initializePoll = function(poll_data) {
       displayHelper._addOption(poll_data.options[op]);
     }
 
-    console.log(" ... is present")
     $('.startPoll').click();
   }
 
@@ -130,7 +127,7 @@ displayHelper._resetPoll = function(poll) {
 
   // set the poll options
   $.each(poll.options, function(i, n) {
-    console.log($(this));
+    //console.log($(this));
     displayHelper._addOption(n);
   });
 
@@ -427,7 +424,7 @@ ahp._bindDetailedVoteEvents = function(leftpair, rightpair) {
  * @param Integer score the value of the vote
  */
 ahp.recordVote = function(pair, score) {
-  console.log(pair, score);
+  //console.log(pair, score);
 
   // record the scores
   ahp.resultArray[pair[0]][pair[1]] = score;
@@ -540,6 +537,34 @@ ahp._displayResults = function(calcResults) {
     '<input type="button" class="togglePollResults" value="Hide/Show" /></td></tr>';
 
   html += '</table>';
+
+  console.log(ahp.optionArray)
+  console.log(ahp.resultArray)
+
+  function createTable(tableData,table_class) {
+    var table = document.createElement('table');
+		table.className = table_class;
+    var row = {};
+    var cell = {};
+
+    tableData.forEach(function(rowData) {
+      row = table.insertRow(-1); // [-1] for last position in Safari
+      rowData.forEach(function(cellData) {
+        cell = row.insertCell();
+        cell.textContent = cellData;
+      });
+    });
+    document.body.appendChild(table);
+  }
+
+  html += "<p>"+createTable(ahp.resultArray,"final_table")+"</p>";
+
+  // html += "<p><ul>";
+	// for (var op in ahp.optionArray) {
+	// 	html += "<li>"+ahp.optionArray[op]+"</li>";
+	// }
+	// html += "</ul></p>";
+
 
   // display the table
   $(html).insertAfter('#pollResults h3').hide().fadeIn('slow');
