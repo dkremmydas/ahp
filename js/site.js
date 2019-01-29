@@ -3,55 +3,55 @@ var displayHelper = {};
 /**
  * purpose: initialize the poll
  */
-displayHelper.initializePoll = function(poll_data){
+displayHelper.initializePoll = function(poll_data) {
 
-	// bind events
-	$('#addOption').click(function(){
-		displayHelper.addOptionToList();
-	});
+  // bind events
+  $('#addOption').click(function() {
+    displayHelper.addOptionToList();
+  });
 
-	$('#addMultiOptions').click(function(){
-		displayHelper.addMultiOptionsToList();
-	});
+  $('#addMultiOptions').click(function() {
+    displayHelper.addMultiOptionsToList();
+  });
 
-	$('.startPoll').click(function(){
-		displayHelper.startPoll();
-	});
+  $('.startPoll').click(function() {
+    displayHelper.startPoll();
+  });
 
-	$('.stopPoll').click(function(){
-		displayHelper.stopPoll();
-	});
+  $('.stopPoll').click(function() {
+    displayHelper.stopPoll();
+  });
 
-	$('.changePoll').click(function(){
-		displayHelper.stopPoll();
-	});
+  $('.changePoll').click(function() {
+    displayHelper.stopPoll();
+  });
 
-	// add an option to the list when the user selects the enter key
-	$("#optionText").keypress(function (e) {
-         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
-         	// take an action
-			displayHelper.addOptionToList();
-         }
-     });
+  // add an option to the list when the user selects the enter key
+  $("#optionText").keypress(function(e) {
+    if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+      // take an action
+      displayHelper.addOptionToList();
+    }
+  });
 
-     // hide the poll results container because there are not any results yet
-     $('#pollResults').hide();
+  // hide the poll results container because there are not any results yet
+  $('#pollResults').hide();
 
 
-		 //if poll_data i present, start the poll_data
-		 console.log("checking poll data")
-		 console.log(poll_data)
-		 if (poll_data!==null) {
+  //if poll_data i present, start the poll_data
+  console.log("checking poll data")
+  console.log(poll_data)
+  if (poll_data !== null) {
 
-			 $('.questionTextInput').val(poll_data.question);
+    $('.questionTextInput').val(poll_data.question);
 
-			 for(var op in poll_data.options) {
-				 displayHelper._addOption(poll_data.options[op]);
-			 }
+    for (var op in poll_data.options) {
+      displayHelper._addOption(poll_data.options[op]);
+    }
 
-			  console.log(" ... is present")
-			  $('.startPoll').click();
-		 }
+    console.log(" ... is present")
+    $('.startPoll').click();
+  }
 
 };
 
@@ -60,27 +60,27 @@ displayHelper.initializePoll = function(poll_data){
  * purpose: add an option to the option list using the string in
  * the input field: #optionText
  */
-displayHelper.addOptionToList = function(){
-	var option = $('#optionText').val();
-	displayHelper._addOption(option);
+displayHelper.addOptionToList = function() {
+  var option = $('#optionText').val();
+  displayHelper._addOption(option);
 };
 
 /**
  * purpose: add multiple options to the option list using the strings in
  * the textarea: #multiOptionText
  */
-displayHelper.addMultiOptionsToList = function(){
-	// split the options from the textarea
-	var options = $('#multiOptionText').val();
-	var optionArray = options.split('\n');
+displayHelper.addMultiOptionsToList = function() {
+  // split the options from the textarea
+  var options = $('#multiOptionText').val();
+  var optionArray = options.split('\n');
 
-	// add each option
-	$.each(optionArray, function(){
-		displayHelper._addOption(this);
-	});
+  // add each option
+  $.each(optionArray, function() {
+    displayHelper._addOption(this);
+  });
 
-	// clear the textarea
-	$('#multiOptionText').val('');
+  // clear the textarea
+  $('#multiOptionText').val('');
 
 };
 
@@ -89,30 +89,30 @@ displayHelper.addMultiOptionsToList = function(){
  *
  * @param String option the option text
  */
-displayHelper._addOption = function(option){
+displayHelper._addOption = function(option) {
 
-	option.trim();
+  option.trim();
 
-	if(option.length > 0){
-		$('<tr class="new"><td class="index"></td><td class="option">' + option + '</td><td><a href="#" class="removeParent">[x]</a></td></tr>')
-		.appendTo('#optionsList').hide().fadeIn('slow');
+  if (option.length > 0) {
+    $('<tr class="new"><td class="index"></td><td class="option">' + option + '</td><td><a href="#" class="removeParent">[x]</a></td></tr>')
+      .appendTo('#optionsList').hide().fadeIn('slow');
 
-		// clear the option text
-		displayHelper._resetOptionInputText();
+    // clear the option text
+    displayHelper._resetOptionInputText();
 
-		// bind the remove event to the delete button
-		displayHelper._bindRemoveEvents();
+    // bind the remove event to the delete button
+    displayHelper._bindRemoveEvents();
 
-		// update the table index. This will renumber the table rows.
-		displayHelper._updateTableIndex();
-	}
+    // update the table index. This will renumber the table rows.
+    displayHelper._updateTableIndex();
+  }
 };
 
 /**
  * purpose: clear the text in the input: #optionText
  */
-displayHelper._resetOptionInputText = function(){
-	$('#optionText').val('');
+displayHelper._resetOptionInputText = function() {
+  $('#optionText').val('');
 
 };
 
@@ -121,114 +121,112 @@ displayHelper._resetOptionInputText = function(){
  *
  * @param Object poll an object with the question and options for the poll
  */
-displayHelper._resetPoll = function(poll){
-	// remove the existing poll options
-	$('#optionsList').empty();
+displayHelper._resetPoll = function(poll) {
+  // remove the existing poll options
+  $('#optionsList').empty();
 
-	// set the poll question
-	$('.questionTextInput').val(poll.question);
+  // set the poll question
+  $('.questionTextInput').val(poll.question);
 
-	// set the poll options
-	$.each(poll.options, function(i,n){
-		console.log($(this));
-		displayHelper._addOption(n);
-	});
+  // set the poll options
+  $.each(poll.options, function(i, n) {
+    console.log($(this));
+    displayHelper._addOption(n);
+  });
 
-	// stop the poll
-	displayHelper.stopPoll();
+  // stop the poll
+  displayHelper.stopPoll();
 };
 
 /**
  * purpose: bind a remove event to the remove link for an option
  */
-displayHelper._bindRemoveEvents = function(){
-	$('#optionsList tr.new .removeParent').click(function(){
-		$(this).parent().parent().remove();
-		displayHelper._updateTableIndex();
-	});
+displayHelper._bindRemoveEvents = function() {
+  $('#optionsList tr.new .removeParent').click(function() {
+    $(this).parent().parent().remove();
+    displayHelper._updateTableIndex();
+  });
 
-	$('#optionsList tr.new').removeClass('new');
+  $('#optionsList tr.new').removeClass('new');
 };
 
 /**
  * purpose: function to stop a poll. This function is bound to a button.
  */
-displayHelper.stopPoll = function(){
-	// hide the stop poll button container
-	$('.stopPoll').hide();
+displayHelper.stopPoll = function() {
+  // hide the stop poll button container
+  $('.stopPoll').hide();
 
-	// hide the poll questions container
-	$('.changePoll, #pollQuestions').hide();
+  // hide the poll questions container
+  $('.changePoll, #pollQuestions').hide();
 
-	// show hidden containers for setup
-	$('.newOption, .removeParent, .startPoll, .setup').show('slow');
+  // show hidden containers for setup
+  $('.newOption, .removeParent, .startPoll, .setup').show('slow');
 
-	// show the existing poll results
-	$('#pollResults').show();
+  // show the existing poll results
+  $('#pollResults').show();
 };
 
 /**
  * purpose: function to change a poll. This allows the user to change the poll values.
  * This function is bound to a button.
  */
-displayHelper.changePoll = function(){
-	// hide the stop poll button container
-	$('.stopPoll').hide();
+displayHelper.changePoll = function() {
+  // hide the stop poll button container
+  $('.stopPoll').hide();
 
-	//show the change poll container
-	$('.changePoll').show();
+  //show the change poll container
+  $('.changePoll').show();
 
-	// show the existing poll results
-	$('#pollResults').show();
+  // show the existing poll results
+  $('#pollResults').show();
 };
 
 /**
  * purpose: function to start a poll. This function is bound to a button.
  */
-displayHelper.startPoll = function(){
-	if($('#optionsList .option').size() > 1){
-		// hide the setup container
-		$('.setup').hide();
+displayHelper.startPoll = function() {
 
-		// display the stop poll button
-		$('.stopPoll').show();
+  if ($('#optionsList .option').size() > 1) {
+    // hide the setup container
+    $('.setup').hide();
 
-		// hide the existing poll results
-		$('#pollResults').hide();
+    // display the stop poll button
+    $('.stopPoll').show();
 
-		// hide set up containers
-		$('.newOption, .removeParent, .startPoll').hide();
+    // hide the existing poll results
+    $('#pollResults').hide();
 
-		var pollSettings = {};
-		pollSettings.optionArray = [];
+    // hide set up containers
+    $('.newOption, .removeParent, .startPoll').hide();
 
-		pollSettings.questionText = $('.questionTextInput').val();
+    var pollSettings = {};
+    pollSettings.optionArray = [];
 
-		// extract the options
-		var optionArray = [];
-		$('#optionsList .option').each(function(i, n){
-			pollSettings.optionArray[pollSettings.optionArray.length] = $(this).text();
-		});
+    pollSettings.questionText = $('.questionTextInput').val();
 
+    // extract the options
+    var optionArray = [];
+    $('#optionsList .option').each(function(i, n) {
+      pollSettings.optionArray[pollSettings.optionArray.length] = $(this).text();
+    });
 
+    //pollSettings.voteType = $("input[name='votingType']:checked").val();
+    pollSettings.voteType = "simpleVoting";
 
+    // start the poll
+    ahp.startPoll(pollSettings);
 
-		//pollSettings.voteType = $("input[name='votingType']:checked").val();
-        pollSettings.voteType = "simpleVoting";
-
-		// start the poll
-		ahp.startPoll(pollSettings);
-
-	}
+  }
 };
 
 /**
  * purpose: update the option list index
  */
-displayHelper._updateTableIndex = function(){
-	$('#optionsList .index').each(function(index){
-		$(this).html('<strong>option ' + (index+1) + ': </strong>');
-	});
+displayHelper._updateTableIndex = function() {
+  $('#optionsList .index').each(function(index) {
+    $(this).html('<strong>option ' + (index + 1) + ': </strong>');
+  });
 };
 
 var ahp = {};
@@ -251,7 +249,11 @@ ahp.optionArray = [];
 /**
  * the score values
  */
-ahp.scores = {eq: 1, low: 2, high: 4};
+ahp.scores = {
+  eq: 1,
+  low: 2,
+  high: 4
+};
 
 /**
  * the index of the current pair with respect to the total number of questions that will be asked
@@ -273,30 +275,30 @@ ahp.resultCount = 1;
  * @param Array optionArray the options to be presented as pairs for voting
  * @param String questionText the question
  */
-ahp.startPoll = function(pollSettings){
-	// setup the questions and options
-	ahp.question = pollSettings.questionText;
-	ahp.optionArray = pollSettings.optionArray;
+ahp.startPoll = function(pollSettings) {
+  // setup the questions and options
+  ahp.question = pollSettings.questionText;
+  ahp.optionArray = pollSettings.optionArray;
 
-	ahp._setVotingType(pollSettings);
+  ahp._setVotingType(pollSettings);
 
-	// setup the result array
-	ahp._setUpResultArray();
+  // setup the result array
+  ahp._setUpResultArray();
 
-	// determine the total number of questions
-	ahp._initializeQuestionCount();
+  // determine the total number of questions
+  ahp._initializeQuestionCount();
 
-	// display the first pair
-	ahp._displayNextQuestion();
-	$('#pollQuestions').show('slow');
+  // display the first pair
+  ahp._displayNextQuestion();
+  $('#pollQuestions').show('slow');
 };
 
 /**
  * purpose: initialize the question count
  */
-ahp._initializeQuestionCount = function(){
-	ahp.questionIndex = 1;
-	ahp.questionTotal = ((ahp.optionArray.length * ahp.optionArray.length) - ahp.optionArray.length) / 2;
+ahp._initializeQuestionCount = function() {
+  ahp.questionIndex = 1;
+  ahp.questionTotal = ((ahp.optionArray.length * ahp.optionArray.length) - ahp.optionArray.length) / 2;
 };
 
 /**
@@ -304,117 +306,117 @@ ahp._initializeQuestionCount = function(){
  *
  * @param Object pollSettings
  */
-ahp._setVotingType = function(pollSettings){
-	if(pollSettings.voteType){
-		 switch (pollSettings.voteType) {
-		 	case 'simpleVoting':
-		 		$('.detailedPollButtons').hide();
-		 		$('.simplePollButtons').show();
-		 		break;
+ahp._setVotingType = function(pollSettings) {
+  if (pollSettings.voteType) {
+    switch (pollSettings.voteType) {
+      case 'simpleVoting':
+        $('.detailedPollButtons').hide();
+        $('.simplePollButtons').show();
+        break;
 
-		 	case 'detailedVoting':
-		 		$('.simplePollButtons').hide();
-		 		$('.detailedPollButtons').show();
-		 		break;
+      case 'detailedVoting':
+        $('.simplePollButtons').hide();
+        $('.detailedPollButtons').show();
+        break;
 
-		 	default:
-		 		break;
-		 }
-	}
+      default:
+        break;
+    }
+  }
 };
 
 /**
  * purpose: display the next pair. If there are no more pairs, then calculate the results.
  */
-ahp._displayNextQuestion = function(){
-	// get the next pair
-	var nextQuestion = ahp._getNextQuestion(this.optionArray, this.resultArray);
+ahp._displayNextQuestion = function() {
+  // get the next pair
+  var nextQuestion = ahp._getNextQuestion(this.optionArray, this.resultArray);
 
-	if(nextQuestion !== false){
-		// display the pair
-		$('.questionTextDisplay').text(ahp.question);
-		$('.questionIndex').text('Σύγκριση ' + ahp.questionIndex +' από ' + ahp.questionTotal);
-		$('#pollQuestion1').text(ahp.optionArray[nextQuestion[0]]);
-		$('#pollQuestion2').text(ahp.optionArray[nextQuestion[1]]);
-		ahp._bindVoteEvents(nextQuestion);
-	} else {
-		// calculate the results
-		ahp._unbindVoteEvents();
-		ahp._calculateResult();
-	}
+  if (nextQuestion !== false) {
+    // display the pair
+    $('.questionTextDisplay').text(ahp.question);
+    $('.questionIndex').text('Σύγκριση ' + ahp.questionIndex + ' από ' + ahp.questionTotal);
+    $('#pollQuestion1').text(ahp.optionArray[nextQuestion[0]]);
+    $('#pollQuestion2').text(ahp.optionArray[nextQuestion[1]]);
+    ahp._bindVoteEvents(nextQuestion);
+  } else {
+    // calculate the results
+    ahp._unbindVoteEvents();
+    ahp._calculateResult();
+  }
 
 };
 
 /**
  * purpose: unbind the events on the voting buttons
  */
-ahp._unbindVoteEvents = function(){
-	$('.simplePollButtons input[type="button"]').each(function(){
-		$(this).unbind('click');
-	});
+ahp._unbindVoteEvents = function() {
+  $('.simplePollButtons input[type="button"]').each(function() {
+    $(this).unbind('click');
+  });
 
-	$('.detailedPollButtons input[type="button"]').each(function(){
-		$(this).unbind('click');
-	});
+  $('.detailedPollButtons input[type="button"]').each(function() {
+    $(this).unbind('click');
+  });
 };
 
 /**
  * purpose: bind the events to the voting buttons
  */
-ahp._bindVoteEvents = function(nextQuestionArr){
-	ahp._unbindVoteEvents();
+ahp._bindVoteEvents = function(nextQuestionArr) {
+  ahp._unbindVoteEvents();
 
-	var leftpair = nextQuestionArr;
-	var rightpair = [nextQuestionArr[1], nextQuestionArr[0] ];
+  var leftpair = nextQuestionArr;
+  var rightpair = [nextQuestionArr[1], nextQuestionArr[0]];
 
-	ahp._bindSimpleVoteEvents(leftpair, rightpair);
-	ahp._bindDetailedVoteEvents(leftpair, rightpair);
+  ahp._bindSimpleVoteEvents(leftpair, rightpair);
+  ahp._bindDetailedVoteEvents(leftpair, rightpair);
 };
 
 /**
  * purpose: bind the events to the simple buttons
  */
-ahp._bindSimpleVoteEvents = function(leftpair, rightpair){
-	$('.simplePollButtons #L_MuchMore').click(function(){
-		ahp.recordVote(leftpair, ahp.scores.high);
-	});
+ahp._bindSimpleVoteEvents = function(leftpair, rightpair) {
+  $('.simplePollButtons #L_MuchMore').click(function() {
+    ahp.recordVote(leftpair, ahp.scores.high);
+  });
 
-	$('.simplePollButtons #L_SlightlyMore').click(function(){
-		ahp.recordVote(leftpair, ahp.scores.low);
-	});
+  $('.simplePollButtons #L_SlightlyMore').click(function() {
+    ahp.recordVote(leftpair, ahp.scores.low);
+  });
 
-	$('.simplePollButtons #L_R_Same').click(function(){
-		ahp.recordVote(leftpair, ahp.scores.eq);
-	});
+  $('.simplePollButtons #L_R_Same').click(function() {
+    ahp.recordVote(leftpair, ahp.scores.eq);
+  });
 
-	$('.simplePollButtons #R_SlightlyMore').click(function(){
-		ahp.recordVote(rightpair, ahp.scores.low);
-	});
+  $('.simplePollButtons #R_SlightlyMore').click(function() {
+    ahp.recordVote(rightpair, ahp.scores.low);
+  });
 
-	$('#R_MuchMore').click(function(){
-		ahp.recordVote(rightpair, ahp.scores.high);
-	});
+  $('#R_MuchMore').click(function() {
+    ahp.recordVote(rightpair, ahp.scores.high);
+  });
 };
 
 /**
  * purpose: bind the events to the detailed buttons
  */
-ahp._bindDetailedVoteEvents = function(leftpair, rightpair){
-	$('.detailedPollButtons input[type="button"].leftMore').each(function(){
-		$(this).click(function(){
-			ahp.recordVote(leftpair, parseInt($(this).val(), 10));
-		});
-	});
+ahp._bindDetailedVoteEvents = function(leftpair, rightpair) {
+  $('.detailedPollButtons input[type="button"].leftMore').each(function() {
+    $(this).click(function() {
+      ahp.recordVote(leftpair, parseInt($(this).val(), 10));
+    });
+  });
 
-	$('.detailedPollButtons input[type="button"].rightMore').each(function(){
-		$(this).click(function(){
-			ahp.recordVote(rightpair, parseInt($(this).val(), 10));
-		});
-	});
+  $('.detailedPollButtons input[type="button"].rightMore').each(function() {
+    $(this).click(function() {
+      ahp.recordVote(rightpair, parseInt($(this).val(), 10));
+    });
+  });
 
-	$('.detailedPollButtons input[type="button"].same').click(function(){
-		ahp.recordVote(leftpair, 1);
-	});
+  $('.detailedPollButtons input[type="button"].same').click(function() {
+    ahp.recordVote(leftpair, 1);
+  });
 };
 
 
@@ -424,236 +426,235 @@ ahp._bindDetailedVoteEvents = function(leftpair, rightpair){
  * @param Array pair the index of the questions in optionArray
  * @param Integer score the value of the vote
  */
-ahp.recordVote = function (pair, score){
-	console.log(pair, score);
+ahp.recordVote = function(pair, score) {
+  console.log(pair, score);
 
-	// record the scores
-	ahp.resultArray[pair[0]][pair[1]] = score;
-	ahp.resultArray[pair[1]][pair[0]] = 1/score;
+  // record the scores
+  ahp.resultArray[pair[0]][pair[1]] = score;
+  ahp.resultArray[pair[1]][pair[0]] = 1 / score;
 
-	// increment the question index
-	ahp.questionIndex ++;
+  // increment the question index
+  ahp.questionIndex++;
 
-	// display the next pair
-	ahp._displayNextQuestion();
+  // display the next pair
+  ahp._displayNextQuestion();
 };
 
 /**
  * purpose: calculate the results
  */
-ahp._calculateResult = function(){
-	console.log('calculating results ...');
+ahp._calculateResult = function() {
+  console.log('calculating results ...');
 
-	// hide questions
-	$('#pollQuestions').hide('slow');
+  // hide questions
+  $('#pollQuestions').hide('slow');
 
-	// calc results
-	var calcResults = ahpCalc.calculateResults(this.resultArray);
+  // calc results
+  var calcResults = ahpCalc.calculateResults(this.resultArray);
 
-	// display the results
-	ahp._displayResults(calcResults);
+  // display the results
+  ahp._displayResults(calcResults);
 
-	displayHelper.changePoll();
+  displayHelper.changePoll();
 };
 
 /**
  * purpose: display the result table
  */
-ahp._displayResults = function(calcResults){
-	var html = '';
-	var resultId = 'result_set_' +	ahp.resultCount;
+ahp._displayResults = function(calcResults) {
+  var html = '';
+  var resultId = 'result_set_' + ahp.resultCount;
 
-	// remove the current class from existing result tables
-	$('table.current').removeClass('current');
+  // remove the current class from existing result tables
+  $('table.current').removeClass('current');
 
 
-	html += '<table class="current pollResultTable">';
+  html += '<table class="current pollResultTable">';
 
-	// the question text
-	html +=	'<tr>' +
-			'<td colspan="4" class="titleRow">Result Set #' +
-			ahp.resultCount +
-			': ' +
-			'<span class="resultSetQuestionText">' +
-			ahp.question +
-			' </span>' +
-			'</td></tr>';
+  // the question text
+  html += '<tr>' +
+    '<td colspan="4" class="titleRow">Result Set #' +
+    ahp.resultCount +
+    ': ' +
+    '<span class="resultSetQuestionText">' +
+    ahp.question +
+    ' </span>' +
+    '</td></tr>';
 
-	html += '<tr class="result_set resultColumnTitle">' +
-			'<td>Option</td>'	+
-			'<td>Result</td>'	+
-			'<td>Scaled <br /> Result</td>' +
-			'<td>&nbsp</td>'+
-			'</tr>';
+  html += '<tr class="result_set resultColumnTitle">' +
+    '<td>Option</td>' +
+    '<td>Result</td>' +
+    '<td>Scaled <br /> Result</td>' +
+    '<td>&nbsp</td>' +
+    '</tr>';
 
-	// the option text and result values
-	for(var i = 0; i < ahp.optionArray.length; i++){
+  // the option text and result values
+  for (var i = 0; i < ahp.optionArray.length; i++) {
 
-		var resultText = this._convertRealToRoundedPercent(calcResults.resultColumn[i]);
+    var resultText = this._convertRealToRoundedPercent(calcResults.resultColumn[i]);
 
-		html += '<tr class="result_set" >' +
-				'<td>' +
-				// option title
-				'<span class="resultSetOptionText">' + ahp.optionArray[i] + '</span>' +
-				'</td>' +
-				'<td>' +
-				'<span class="result">' + resultText + '</span>' +
-				'</td>' +
-				'<td>' +
-				'<span style="text-align: right;" class="scaledResult">' + resultText + '</span>' +
-				'</td>' +
-				'<td>' +
-				// bar
-				'<div style="background-color:blue;width:' + (resultText * 1.2 * 100).toFixed(4) + 'px">&nbsp;</div>' +
-				'</td>' +
-				'</tr>';
-	}
-	// the question text
-	html +=	'<tr class="result_set">' +
-			'<td colspan="2" style="text-align: right;">&nbsp;</td>' +
-			'<td colspan="2" style="text-align: left;">' +
-			'<input size="4" style="text-align: right;" class="resultScaleFactor" value="1"/>' +
-			'<button style="text-align: right;" class="scaleResults-new">Scale</button>' +
-			'</td></tr>';
+    html += '<tr class="result_set" >' +
+      '<td>' +
+      // option title
+      '<span class="resultSetOptionText">' + ahp.optionArray[i] + '</span>' +
+      '</td>' +
+      '<td>' +
+      '<span class="result">' + resultText + '</span>' +
+      '</td>' +
+      '<td>' +
+      '<span style="text-align: right;" class="scaledResult">' + resultText + '</span>' +
+      '</td>' +
+      '<td>' +
+      // bar
+      '<div style="background-color:blue;width:' + (resultText * 1.2 * 100).toFixed(4) + 'px">&nbsp;</div>' +
+      '</td>' +
+      '</tr>';
+  }
+  // the question text
+  html += '<tr class="result_set">' +
+    '<td colspan="2" style="text-align: right;">&nbsp;</td>' +
+    '<td colspan="2" style="text-align: left;">' +
+    '<input size="4" style="text-align: right;" class="resultScaleFactor" value="1"/>' +
+    '<button style="text-align: right;" class="scaleResults-new">Scale</button>' +
+    '</td></tr>';
 
-	// the consistancy calculation
-	var consistencyRatioClass = '';
-	if(calcResults.consistencyRatio < 0.11 ){
-		consistencyRatioClass = 'green';
-	}
-	else {
-		consistencyRatioClass = 'orange';
-	}
+  // the consistancy calculation
+  var consistencyRatioClass = '';
+  if (calcResults.consistencyRatio < 0.11) {
+    consistencyRatioClass = 'green';
+  } else {
+    consistencyRatioClass = 'orange';
+  }
 
-	html +=	'<tr>' +
-			'<td colspan="4" class = "' +
-			 consistencyRatioClass +
-			'">Consistency Ratio: ' +
-			 this._convertRealToRoundedPercent(calcResults.consistencyRatio, 2) +
-			'</td></tr>';
+  html += '<tr>' +
+    '<td colspan="4" class = "' +
+    consistencyRatioClass +
+    '">Consistency Ratio: ' +
+    this._convertRealToRoundedPercent(calcResults.consistencyRatio, 2) +
+    '</td></tr>';
 
-	// the action buttons
-	html +=	'<tr class="' + resultId +'" >' +
-			'<td colspan="3">' +
-			'<input type="button" class="retryPoll" value="Retry" />' +
-			'<input type="button" class="togglePollResults" value="Hide/Show" /></td></tr>';
+  // the action buttons
+  html += '<tr class="' + resultId + '" >' +
+    '<td colspan="3">' +
+    '<input type="button" class="retryPoll" value="Retry" />' +
+    '<input type="button" class="togglePollResults" value="Hide/Show" /></td></tr>';
 
-	html += '</table>';
+  html += '</table>';
 
-	// display the table
-	$(html).insertAfter('#pollResults h3').hide().fadeIn('slow');
+  // display the table
+  $(html).insertAfter('#pollResults h3').hide().fadeIn('slow');
 
-	// increment the result table count
-	ahp.resultCount ++;
+  // increment the result table count
+  ahp.resultCount++;
 
-	// bind events to the buttons in the new table
-	ahp._addRetryEvents(resultId);
-	ahp._addResultToggleEvents(resultId);
-	ahp._addScaleResultsEvents();
+  // bind events to the buttons in the new table
+  ahp._addRetryEvents(resultId);
+  ahp._addResultToggleEvents(resultId);
+  ahp._addScaleResultsEvents();
 };
 
 /**
  * purpose: round a real number
  */
-ahp._convertRealToRoundedPercent = function(num, digits){
-	var e = (digits) ? digits : 4;
-	var f1 = Math.pow(10, e);
+ahp._convertRealToRoundedPercent = function(num, digits) {
+  var e = (digits) ? digits : 4;
+  var f1 = Math.pow(10, e);
 
-	// rounding will be done by adding half the last digit to last-digit + 1
-	// f2 determines the position of last-digit + 1 and r is half the last digit
-	var f2 = Math.pow(10, e+1);
-	var r = 5 / f2;
+  // rounding will be done by adding half the last digit to last-digit + 1
+  // f2 determines the position of last-digit + 1 and r is half the last digit
+  var f2 = Math.pow(10, e + 1);
+  var r = 5 / f2;
 
-	// calc rounded result
-	var resultValue = ((((num + r ) * f1) + '').split('.', 1)/f1).toFixed(4);
+  // calc rounded result
+  var resultValue = ((((num + r) * f1) + '').split('.', 1) / f1).toFixed(4);
 
-	// convert to string
-	resultValue = resultValue + '';
+  // convert to string
+  resultValue = resultValue + '';
 
-	return resultValue;
+  return resultValue;
 };
 
-ahp._addScaleResultsEvents = function(){
+ahp._addScaleResultsEvents = function() {
 
-	$('.scaleResults-new').click(function(){
-		var scaleFactor = $(this).parent().find('.resultScaleFactor').get(0);
-		scaleFactor = $(scaleFactor).val();
+  $('.scaleResults-new').click(function() {
+    var scaleFactor = $(this).parent().find('.resultScaleFactor').get(0);
+    scaleFactor = $(scaleFactor).val();
 
-		$(this).parent().parent().parent().find('.result').each(function(){
-			var curentVal = $(this).text();
-			var scaledResult= $(this).parent().parent().find('.scaledResult').get(0);
-			$(scaledResult).text(ahp._convertRealToRoundedPercent(curentVal * scaleFactor));
-		});
+    $(this).parent().parent().parent().find('.result').each(function() {
+      var curentVal = $(this).text();
+      var scaledResult = $(this).parent().parent().find('.scaledResult').get(0);
+      $(scaledResult).text(ahp._convertRealToRoundedPercent(curentVal * scaleFactor));
+    });
 
-	});
+  });
 
-	// bind the enter key events
-	var input = $('.scaleResults-new').parent().find('.resultScaleFactor').get(0);
-	$(input).keypress(function (e) {
-         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
-			var scaleFactor = $(this).val();
+  // bind the enter key events
+  var input = $('.scaleResults-new').parent().find('.resultScaleFactor').get(0);
+  $(input).keypress(function(e) {
+    if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+      var scaleFactor = $(this).val();
 
-			$(this).parent().parent().parent().find('.result').each(function(){
-				var curentVal = $(this).text();
-				var scaledResult= $(this).parent().parent().find('.scaledResult').get(0);
-				$(scaledResult).text(ahp._convertRealToRoundedPercent(curentVal * scaleFactor));
-			});
+      $(this).parent().parent().parent().find('.result').each(function() {
+        var curentVal = $(this).text();
+        var scaledResult = $(this).parent().parent().find('.scaledResult').get(0);
+        $(scaledResult).text(ahp._convertRealToRoundedPercent(curentVal * scaleFactor));
+      });
 
-         }
-     });
+    }
+  });
 
-	$('.scaleResults-new').removeClass();
+  $('.scaleResults-new').removeClass();
 };
 
 
 /**
  * purpose: bind the retry event to the retry button in the result table
  */
-ahp._addRetryEvents = function(resultId){
+ahp._addRetryEvents = function(resultId) {
 
-	// bind the button click event to the retry function
-	$('.'+ resultId + ' input.retryPoll').click(function(){
-		ahp._retryPoll(resultId);
-	});
+  // bind the button click event to the retry function
+  $('.' + resultId + ' input.retryPoll').click(function() {
+    ahp._retryPoll(resultId);
+  });
 };
 
 /**
  * purpose: function to toggle the display of rows in the result table.
  * This function is bound to a button in the result table.
  */
-ahp._addResultToggleEvents = function(resultId){
+ahp._addResultToggleEvents = function(resultId) {
 
-	// toggle the rows
-	$('.'+ resultId + ' input.togglePollResults').click(function(){
-		$(this).parent().parent().parent().find('.result_set').toggle();
-	});
+  // toggle the rows
+  $('.' + resultId + ' input.togglePollResults').click(function() {
+    $(this).parent().parent().parent().find('.result_set').toggle();
+  });
 };
 
 /**
  * purpose: function to retry a poll. This function is bound to a button
  * in the result table.
  */
-ahp._retryPoll = function(resultId){
-	var poll = {};
-	poll.options = [];
+ahp._retryPoll = function(resultId) {
+  var poll = {};
+  poll.options = [];
 
-	// get the poll question text from the result table
-	poll.question = $('.' + resultId).parent().find('.resultSetQuestionText').text();
+  // get the poll question text from the result table
+  poll.question = $('.' + resultId).parent().find('.resultSetQuestionText').text();
 
-	// get the poll options from the result table
-	$('.' + resultId).parent().find('.resultSetOptionText').each(function(i){
-		poll.options[i] = $(this).text();
-	});
+  // get the poll options from the result table
+  $('.' + resultId).parent().find('.resultSetOptionText').each(function(i) {
+    poll.options[i] = $(this).text();
+  });
 
-	// reset the poll using the result question and options
-	displayHelper._resetPoll(poll);
+  // reset the poll using the result question and options
+  displayHelper._resetPoll(poll);
 };
 
 /**
  * purpose: setup the result array
  */
-ahp._setUpResultArray = function(){
-	this.resultArray = ahpArrayHelper._setUpSquareArray(this.optionArray.length);
+ahp._setUpResultArray = function() {
+  this.resultArray = ahpArrayHelper._setUpSquareArray(this.optionArray.length);
 };
 
 /**
@@ -663,15 +664,15 @@ ahp._setUpResultArray = function(){
  * @return Array the row and column of the next unanswered question pair
  * @return Boolean returns false if there are no more pairs
  */
-ahp._getNextQuestion = function(optionArray, resultArray){
-	for(var i = 0; i < optionArray.length; i++){
-		for(var j = 0; j < optionArray.length; j++){
-			if(resultArray[i][j] === 0){
-				return [i, j];
-			}
-		}
-	}
-	return false;
+ahp._getNextQuestion = function(optionArray, resultArray) {
+  for (var i = 0; i < optionArray.length; i++) {
+    for (var j = 0; j < optionArray.length; j++) {
+      if (resultArray[i][j] === 0) {
+        return [i, j];
+      }
+    }
+  }
+  return false;
 };
 
 
@@ -680,22 +681,22 @@ ahp._getNextQuestion = function(optionArray, resultArray){
 /**
  * purpose: execute functions on document load
  */
-$(document).ready(function(){
-	var poll_data = {
-		"question": "Ποιός στόχος είναι ποιο σημαντικός για εσάς;",
-		"options": [
-			"Στήριξη γεωργικού εισοδήματος",
-			"Στροφή προς την αγορά/ ενίσχυση της ανταγωνιστικότητας",
-			"Υποστήριξη συνεταιρισμών/ομάδων παραγωγών",
-			"Εξοικονόμηση ενέργειας/εναλλακτικές πηγές ενέργειας",
-			"Προστασία των φυσικών πόρων (έδαφος, νερό) ",
-			"Διατήρηση της άγριας ζωής και του τοπίου",
-			"Ενίσχυση νέων γεωργών και νεοεισερχόμενων στη γεωργία ",
-			"Θέσεις εργασίας στην ύπαιθρο",
-			"Ασφάλεια και υγιεινή τροφίμων / Καλή μεταχείριση των ζώων"
-		]
-	}
-	// intialize the poll
-	displayHelper.initializePoll(poll_data);
+$(document).ready(function() {
+  var poll_data = {
+    "question": "Ποιός στόχος είναι ποιο σημαντικός για εσάς;",
+    "options": [
+      "Στήριξη γεωργικού εισοδήματος",
+      "Στροφή προς την αγορά/ ενίσχυση της ανταγωνιστικότητας",
+      "Υποστήριξη συνεταιρισμών/ομάδων παραγωγών",
+      "Εξοικονόμηση ενέργειας/εναλλακτικές πηγές ενέργειας",
+      "Προστασία των φυσικών πόρων (έδαφος, νερό) ",
+      "Διατήρηση της άγριας ζωής και του τοπίου",
+      "Ενίσχυση νέων γεωργών και νεοεισερχόμενων στη γεωργία ",
+      "Θέσεις εργασίας στην ύπαιθρο",
+      "Ασφάλεια και υγιεινή τροφίμων / Καλή μεταχείριση των ζώων"
+    ]
+  }
+  // intialize the poll
+  displayHelper.initializePoll(poll_data);
 
 });
