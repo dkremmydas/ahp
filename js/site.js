@@ -708,7 +708,7 @@ ahp._getNextQuestion = function(optionArray, resultArray) {
  */
 $(document).ready(function() {
   var poll_data = {
-    "question": "Ποιός στόχος είναι ποιο σημαντικός για εσάς;",
+    "question": "Ποιός στόχος είναι πιο σημαντικός για εσάς;",
     "options": [
       "Στήριξη γεωργικού εισοδήματος",
       "Στροφή προς την αγορά/ ενίσχυση της ανταγωνιστικότητας",
