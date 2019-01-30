@@ -184,7 +184,7 @@ displayHelper.changePoll = function() {
  */
 displayHelper.startPoll = function() {
 
-  if ($('#optionsList .option').size() > 1) {
+  if ($('#optionsList .option').length  > 1) {
     // hide the setup container
     $('.setup').hide();
 
