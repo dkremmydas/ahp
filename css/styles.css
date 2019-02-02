@@ -1,5 +1,5 @@
-@CHARSET "ISO-8859-1";
-body {
+@CHARSET "UTF-8";
+body, div.container {
 	font-family: sans-serif;
 	font-size: 80%;
 }
@@ -118,57 +118,53 @@ lable {
 	margin-bottom: .5em;
 }
 
-.simplePollButtons input{
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  padding: 4px 16px;
-  text-decoration: none;
-  margin: 4px 2px;
-  cursor: pointer;
+#pollQuestions td.splitter {
+	width: 4em;
 }
 
-tr.simplePollButtons td {
-	padding-top: 2em;
+div.pollQuestion span {
+	margin-top:50%;
 }
 
-fieldset {
-	margin-bottom: 1em;
-	padding: 1em;
-	border: 1px solid silver;
+div.pollButton {
+	padding: 0;
+	padding-left: .25em;
+	padding-right: .25em;
+	margin-left: .5em;
+	font-size: .75em;
 }
 
-legend {
-	background-color: white;
-	margin-left: .3em;
+div.pollButton:hover {
+	background-color: green;
+	opacity: 0.5;
+	color: white
+}
+
+div.pollButton p {
+	margin-top:50%;
+}
+
+
+/* poll questions css */
+span.questionText {
+	font-size: 1.1em;
 	font-weight: bold;
 }
 
-#optionsList {
-	margin-bottom: 1em;
+div.slider-tick-label {
+	font-size: 0.8em;
 }
 
-.detailedPollButtons input{
-	padding-left: .5em;
-	padding-right: .5em;
+
+/* bootstrp-slider override css */
+.slider, .slider-tick-label-container {
+    width: 100% !important;
 }
 
-.votingOptions li{
-	margin-left: -3em;
+.slider-selection {
+	background-image: none !important;
 }
 
-.votingOptions li{
-	list-style: none;
-	margin-bottom: 1em;
-
-}
-
-fieldset img {
-	margin-left: 7em;
-	margin-top: .3em;
-}
-
-table.final_table {
-	margin: 2em;
-	border: 1px solid silver;
+.slider-tick.in-selection {
+	background-image: linear-gradient(to bottom,#f9f9f9 0,#f5f5f5 100%) !important;
 }

@@ -248,8 +248,10 @@ ahp.optionArray = [];
  */
 ahp.scores = {
   eq: 1,
-  low: 2,
-  high: 4
+  eq_low: 2,
+  low: 3,
+  low_high: 4,
+  high: 5
 };
 
 /**
@@ -348,13 +350,10 @@ ahp._displayNextQuestion = function() {
  * purpose: unbind the events on the voting buttons
  */
 ahp._unbindVoteEvents = function() {
-  $('.simplePollButtons input[type="button"]').each(function() {
+  $('.simplePollButtons .pollButton').each(function() {
     $(this).unbind('click');
   });
 
-  $('.detailedPollButtons input[type="button"]').each(function() {
-    $(this).unbind('click');
-  });
 };
 
 /**
@@ -367,53 +366,48 @@ ahp._bindVoteEvents = function(nextQuestionArr) {
   var rightpair = [nextQuestionArr[1], nextQuestionArr[0]];
 
   ahp._bindSimpleVoteEvents(leftpair, rightpair);
-  ahp._bindDetailedVoteEvents(leftpair, rightpair);
 };
 
 /**
  * purpose: bind the events to the simple buttons
  */
 ahp._bindSimpleVoteEvents = function(leftpair, rightpair) {
-  $('.simplePollButtons #L_MuchMore').click(function() {
+  $('.simplePollButtons .L_1').click(function() {
     ahp.recordVote(leftpair, ahp.scores.high);
   });
 
-  $('.simplePollButtons #L_SlightlyMore').click(function() {
+  $('.simplePollButtons .L_2').click(function() {
+    ahp.recordVote(leftpair, ahp.scores.low_high);
+  });
+
+  $('.simplePollButtons .L_3').click(function() {
     ahp.recordVote(leftpair, ahp.scores.low);
   });
 
-  $('.simplePollButtons #L_R_Same').click(function() {
+  $('.simplePollButtons .L_4').click(function() {
+    ahp.recordVote(leftpair, ahp.scores.eq_low);
+  });
+
+  $('.simplePollButtons .L_5').click(function() {
     ahp.recordVote(leftpair, ahp.scores.eq);
   });
 
-  $('.simplePollButtons #R_SlightlyMore').click(function() {
+  $('.simplePollButtons .L_6').click(function() {
+    ahp.recordVote(rightpair, ahp.scores.eq_low);
+  });
+
+  $('.simplePollButtons .L_7').click(function() {
     ahp.recordVote(rightpair, ahp.scores.low);
   });
 
-  $('#R_MuchMore').click(function() {
+  $('.simplePollButtons .L_8').click(function() {
+    ahp.recordVote(rightpair, ahp.scores.low_high);
+  });
+
+  $('.simplePollButtons .L_9').click(function() {
     ahp.recordVote(rightpair, ahp.scores.high);
   });
-};
 
-/**
- * purpose: bind the events to the detailed buttons
- */
-ahp._bindDetailedVoteEvents = function(leftpair, rightpair) {
-  $('.detailedPollButtons input[type="button"].leftMore').each(function() {
-    $(this).click(function() {
-      ahp.recordVote(leftpair, parseInt($(this).val(), 10));
-    });
-  });
-
-  $('.detailedPollButtons input[type="button"].rightMore').each(function() {
-    $(this).click(function() {
-      ahp.recordVote(rightpair, parseInt($(this).val(), 10));
-    });
-  });
-
-  $('.detailedPollButtons input[type="button"].same').click(function() {
-    ahp.recordVote(leftpair, 1);
-  });
 };
 
 
@@ -721,6 +715,18 @@ $(document).ready(function() {
       "Ασφάλεια και υγιεινή τροφίμων / Καλή μεταχείριση των ζώων"
     ]
   }
+
+  //initialize sliders
+  $(".js-slider").slider({
+    ticks: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    ticks_labels:["Πολύ<br/>περισσότερο","", "Λίγο<br/>περισσότερο","", "To Ίδιο", "","Λίγο<br/>περισσότερο","","Πολύ<br/>περισσότερο"],
+    ticks_positions: [0, 12.5, 25, 37.5, 50, 62.5, 75, 87.5, 100],
+    min: 1, max: 9, step: 1, lock_to_ticks: true
+  });
+
+  $(".js-slider").slider('refresh');
+
+
   // intialize the poll
   displayHelper.initializePoll(poll_data);
 

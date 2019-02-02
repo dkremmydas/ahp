@@ -5,17 +5,21 @@
 	<title>AHP</title>
 
 	<link rel="stylesheet" type="text/css" href="css/styles.css" />
+	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css"/>
 
 	<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="node_modules/bootstrap-slider/dist/bootstrap-slider.js"></script>
 	<script type="text/javascript" src="js/ahpCalc.obj.js"></script>
 	<script type="text/javascript" src="js/site.js"></script>
 
 </head>
 <body>
-	<div class="container">
+	<div class="container-flex">
 
 		<!-- poll setup-->
-		<div class="setup">
+		<div class="setup row">
 			<h3>Set Up the Poll</h3>
 			<!-- question text -->
 			<fieldset>
@@ -46,73 +50,64 @@
 		</div>
 
 		<!-- start,stop, retry buttons -->
-		<div class="">
-			<input type="button" class="startPoll" value="Start" />
-			<input type="button" class="stopPoll" style="display:none;" value="Stop" />
-			<input type="button" class="changePoll" style="display:none;" value="Retry with New Options" />
+		<div class="row">
+			<div class="col-sm-10">
+				<input type="button" class="startPoll" value="Start" />
+				<input type="button" class="stopPoll" style="display:none;" value="Stop" />
+				<input type="button" class="changePoll" style="display:none;" value="Retry with New Options" />
+			</div>
 		</div>
 
 		<!-- poll questions -->
-		<div id="pollQuestions" class="" style="display:none;">
-			<!-- displlay poll pair -->
-			<h3>Poll Question</h3>
+		<div id="pollQuestions" class="row" style="display:none;">
+			<div class="col-sm-12">
+				<!-- displlay poll pair -->
+				<div class="row">
+					<div class="col-sm-12 pollQuestionTitle">
+						<span class="questionTextDisplay text-center">Question</span>
+					</div>
 
-			<table>
-				<tr>
-					<td class="pollQuestionTitle" colspan="3"><span class="questionTextDisplay">Question</span></td>
-				</tr>
-				<tr>
-					<td class="pollQuestion" id="pollQuestion1">&nbsp;</td>
-					<td />
-					<td class="pollQuestion" id="pollQuestion2">&nbsp;</td>
-				</tr>
+				</div>
 
-				<!-- Simple voting buttons -->
-				<tr class="simplePollButtons">
-					<td>
-						<input type="button" id="L_MuchMore" value="&lt;&lt;&nbsp;Πολύ περισσότερο" />
-						<input type="button" id="L_SlightlyMore" value="&lt;&nbsp;Λίγο περισσότερο" />
-					</td>
-					<td>
-						<input type="button" class="pollVoteLink" id="L_R_Same" value="Το Ίδιο" />
-					</td>
-					<td>
-						<input type="button" id="R_SlightlyMore" value="Λίγο περισσότερο&nbsp;&gt;" />
-						<input type="button" id="R_MuchMore" value="Πολύ περισσότερο&nbsp;&gt;&gt;" />
-					</td>
-				</tr>
+				<div class="row mx-auto">
 
-				<!-- Detailed voting buttons -->
-				<tr class="detailedPollButtons">
-					<td>
-						<input type="button" class="leftMore" value="10" />
-						<input type="button" class="leftMore" value="9" />
-						<input type="button" class="leftMore" value="8" />
-						<input type="button" class="leftMore" value="7" />
-						<input type="button" class="leftMore" value="6" />
-						<input type="button" class="leftMore" value="5" />
-						<input type="button" class="leftMore" value="4" />
-						<input type="button" class="leftMore" value="3" />
-						<input type="button" class="leftMore" value="2" />
-					</td>
-					<td>
-						<input type="button" class="same" value="1" />
-					</td>
-					<td>
-						<input type="button" class="rightMore" value="2" />
-						<input type="button" class="rightMore" value="3" />
-						<input type="button" class="rightMore" value="4" />
-						<input type="button" class="rightMore" value="5" />
-						<input type="button" class="rightMore" value="6" />
-						<input type="button" class="rightMore" value="7" />
-						<input type="button" class="rightMore" value="8" />
-						<input type="button" class="rightMore" value="9" />
-						<input type="button" class="rightMore" value="10" />
-					</td>
-				</tr>
-			</table>
-			<span class="questionIndex">0</span>
-		</div>
+					<div class="col-sm-2 pollQuestion">
+						<span id="pollQuestion1" class="questionText">&nbsp;</span>
+					</div>
+
+					<div class="col-sm-8 simplePollButtons">
+						<div class="row mx-auto">
+
+							<div class="col-sm-1"></div>
+
+							<div class="col-sm-1 pollButton main border border-success rounded  L_1"><p class="text-center">Πολύ Περισσό-<br/>τερο</p></div>
+							<div class="col-sm-1 pollButton border border-success rounded  L_2"><p class="text-center">  </p></div>
+							<div class="col-sm-1 pollButton main border border-success rounded  L_3"><p class="text-center">Λίγο Περισσό-<br/>τερο</p></div>
+							<div class="col-sm-1 pollButton border border-success rounded  L_4"><p class="text-center">  </p></div>
+							<div class="col-sm-1 pollButton main border border-success rounded  L_5"><p class="text-center"><br/>Το Ίδιο</p></div>
+							<div class="col-sm-1 pollButton border border-success rounded  L_6"><p class="text-center">  </p></div>
+							<div class="col-sm-1 pollButton main border border-success rounded  L_7"><p class="text-center">Λίγο Περισσό-<br/>τερο</p></div>
+							<div class="col-sm-1 pollButton border border-success rounded  L_8"><p class="text-center">  </p></div>
+							<div class="col-sm-1 pollButton main border border-success rounded  L_9"><p class="text-center">Πολύ Περισσό-<br/>τερο</p></div>
+							<div class="col-sm-1"></div>
+							<!-- <input type="text" class="js-slider col-sm-8" name="L_slider" data-slider-tooltip="hide" /> -->
+						</div>
+					</div>
+
+					<div class="col-sm-2 pollQuestion">
+						<span id="pollQuestion2" class="questionText">&nbsp;</span>
+					</div>
+
+				</div>
+
+				<div class="row mx-auto" style="margin-top: 2em;">
+					<div class="col-sm-12">
+						<span class="questionIndex text-center">0</span>
+					</div>
+				</div>
+
+			</div>	<!-- end col-sm-12 -->
+		</div> <!-- end pollQuestions -->
 
 		<!-- results -->
 		<div id="pollResults">
